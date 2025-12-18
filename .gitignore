@@ -1,0 +1,13 @@
+# outputs NSIS / publish
+Final/NSIS/publish/
+Final/NSIS/*.exe
+Final/NSIS/*.msi
+Final/NSIS/*.zip
+
+# bin/obj (.NET)
+**/bin/
+**/obj/
+
+Final.zip
+*.zip
+

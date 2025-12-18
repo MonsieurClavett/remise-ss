@@ -1,0 +1,38 @@
+﻿{
+  "defaultAssembly": "Final",
+  "components": [
+    
+    {
+      "type": "Final.Services.WeatherbitService, Final",
+      "services": [
+        { "type": "Final.Services.Interfaces.IWeatherService, Final" }
+      ],
+      "instanceScope": "single-instance"
+    },
+
+    {
+      "type": "Final.DataService.SqliteMeteoDbContext, Final",
+      "services": [
+        { "type": "Final.DataService.MeteoDbContext, Final" }
+      ],
+      "instanceScope": "single-instance"
+    },
+    {
+      "type": "Final.DataService.Repositories.Database.RegionDatabaseRepository, Final",
+      "services": [
+        { "type": "Final.DataService.Repositories.Interfaces.IRegionRepository, Final" }
+      ]
+    },
+
+    { "type": "Final.ViewModels.MeteoViewModel, Final" },
+    { "type": "Final.ViewModels.MainViewModel, Final" },
+    {
+      "type": "Final.Services.DialogueService, Final",
+      "services": [
+        { "type": "Final.Services.Interfaces.IDialogueService, Final" }
+      ],
+      "instanceScope": "single-instance"
+    }
+
+  ]
+}
