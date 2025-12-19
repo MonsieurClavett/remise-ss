@@ -6,11 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Final.ViewModels.Commands;
+using Final.Services;
+
 namespace Final.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
         private BaseViewModel _viewModelActuel;
+
         public BaseViewModel ViewModelActuel
         {
             get => _viewModelActuel;
@@ -23,6 +26,8 @@ namespace Final.ViewModels
         {
             ViewModelActuel = meteoViewModel; 
             OpenConfigurationWindowCommand = new RelayCommand(OpenConfigurationWindow, null);
+
+
         }
         public void OpenConfigurationWindow(object? parameter)
         {

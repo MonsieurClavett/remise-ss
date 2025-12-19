@@ -18,10 +18,7 @@ namespace Final.Services
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
 
-            FrameworkElement.LanguageProperty.OverrideMetadata(
-                typeof(FrameworkElement),
-                new FrameworkPropertyMetadata(
-                    System.Windows.Markup.XmlLanguage.GetLanguage(culture.IetfLanguageTag)));
+            
         }
 
         internal static void ApplyCulture(object langue)

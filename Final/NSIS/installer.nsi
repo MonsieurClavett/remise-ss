@@ -1,84 +1,89 @@
-
-
 !include "MUI2.nsh"
 !include "FileFunc.nsh"
 
-!define APPNAME "Meteo-6256577"    
-!define EXE_NAME "Final.exe"         
-; -------------------------------
+!define APP_NAME "Meteo-6256577"
+!define COMPANY  "6256577"
+!define EXE_NAME "Final.exe"
+!define PUBLISH_DIR "..\bin\Release\net8.0-windows\publish\win-x64"
+!define ICON_FILE "${__FILEDIR__}\Meteo.ico"
 
-!define COMPANY "AlexMarcouiller"   
-!define INSTALLDIR "$PROGRAMFILES64\${APPNAME}" 
-
-
-!define PUBLISH_DIR ".\publish"
-
-Name "${APPNAME}"
-OutFile "${APPNAME}-Setup.exe"
-InstallDir "${INSTALLDIR}"
+Name "${APP_NAME}"
+OutFile "${APP_NAME}-Setup.exe"
+InstallDir "$PROGRAMFILES64\${APP_NAME}"
+InstallDirRegKey HKCU "Software\${APP_NAME}" "InstallDir"
 RequestExecutionLevel admin
-Unicode True
 
-Icon "app.ico"
-UninstallIcon "app.ico"
+Icon "${ICON_FILE}"
+UninstallIcon "${ICON_FILE}"
 
 !define MUI_ABORTWARNING
-!define MUI_ICON "app.ico"
-!define MUI_UNICON "app.ico"
+!define MUI_ICON "${ICON_FILE}"
+!define MUI_UNICON "${ICON_FILE}"
+!define MUI_LANGDLL_ALLLANGUAGES
 
-!insertmacro MUI_LANGUAGE "French"
-!insertmacro MUI_LANGUAGE "English"
+Page custom LangPageCreate LangPageLeave
+!define MUI_PAGE_CUSTOMFUNCTION_PRE LicenseFrPre
+!insertmacro MUI_PAGE_LICENSE "${__FILEDIR__}\license_fr.txt"
+!define MUI_PAGE_CUSTOMFUNCTION_PRE LicenseEnPre
+!insertmacro MUI_PAGE_LICENSE "${__FILEDIR__}\license_en.txt"
 
-!insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "licence.txt"
 !insertmacro MUI_PAGE_DIRECTORY
-
-Var StartMenuFolder
-!insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
-
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
-!insertmacro MUI_UNPAGE_WELCOME
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
 
+!insertmacro MUI_LANGUAGE "French"
+!insertmacro MUI_LANGUAGE "English"
+
+Function .onInit
+  !insertmacro MUI_LANGDLL_DISPLAY
+FunctionEnd
+
+Function LangPageCreate
+FunctionEnd
+
+Function LangPageLeave
+FunctionEnd
+
+Function LicenseFrPre
+  StrCmp $LANGUAGE ${LANG_FRENCH} 0 +2
+  Return
+  Abort
+FunctionEnd
+
+Function LicenseEnPre
+  StrCmp $LANGUAGE ${LANG_ENGLISH} 0 +2
+  Return
+  Abort
+FunctionEnd
+
 Section "Install"
-
-  IfFileExists "${PUBLISH_DIR}\${EXE_NAME}" +2 0
-    Abort "Publish introuvable: ${PUBLISH_DIR}\${EXE_NAME}. Publie en Release/win-x64 puis reessaie."
-
   SetOutPath "$INSTDIR"
-
+  File /oname=Meteo.ico "${__FILEDIR__}\Meteo.ico"
   File /r "${PUBLISH_DIR}\*.*"
+
+  WriteRegStr HKCU "Software\${APP_NAME}" "InstallDir" "$INSTDIR"
+
+  CreateDirectory "$SMPROGRAMS\${APP_NAME}"
+  CreateShortcut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\${EXE_NAME}" "" "$INSTDIR\Meteo.ico" 0
 
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
-  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-    CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-    CreateShortcut  "$SMPROGRAMS\$StartMenuFolder\${APPNAME}.lnk" "$INSTDIR\${EXE_NAME}" "" "$INSTDIR\${EXE_NAME}" 0
-    CreateShortcut  "$SMPROGRAMS\$StartMenuFolder\Désinstaller ${APPNAME}.lnk" "$INSTDIR\Uninstall.exe"
-  !insertmacro MUI_STARTMENU_WRITE_END
-
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayName" "${APPNAME}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "UninstallString" "$\"$INSTDIR\Uninstall.exe$\""
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayIcon" "$\"$INSTDIR\${EXE_NAME}$\""
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "InstallLocation" "$\"$INSTDIR$\""
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "NoModify" 1
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "NoRepair" 1
-
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "DisplayName" "${APP_NAME}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "UninstallString" "$\"$INSTDIR\Uninstall.exe$\""
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "DisplayIcon" "$INSTDIR\Meteo.ico"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "Publisher" "${COMPANY}"
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "NoModify" 1
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}" "NoRepair" 1
 SectionEnd
 
+
 Section "Uninstall"
-
-  !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
-  Delete "$SMPROGRAMS\$StartMenuFolder\${APPNAME}.lnk"
-  Delete "$SMPROGRAMS\$StartMenuFolder\Désinstaller ${APPNAME}.lnk"
-  RMDir  "$SMPROGRAMS\$StartMenuFolder"
-
   RMDir /r "$INSTDIR"
-
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
-
+  RMDir /r "$SMPROGRAMS\${APP_NAME}"
+  DeleteRegKey HKCU "Software\${APP_NAME}"
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}"
 SectionEnd

@@ -63,9 +63,9 @@ namespace Final.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] soleil {
+        internal static byte[] Meteo {
             get {
-                object obj = ResourceManager.GetObject("soleil", resourceCulture);
+                object obj = ResourceManager.GetObject("Meteo", resourceCulture);
                 return ((byte[])(obj));
             }
         }

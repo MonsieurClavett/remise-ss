@@ -50,6 +50,8 @@ namespace Final.ViewModels
 
         private void Save()
         {
+            Final.Services.LanguageService.ApplyCulture(Properties.Settings.Default.langue);
+
             Properties.Settings.Default.tokenWeatherbit = Token?.Trim() ?? "";
             Properties.Settings.Default.langue = (LangueSelectionnee == "English") ? "en-US" : "fr-CA";
             Properties.Settings.Default.Save();

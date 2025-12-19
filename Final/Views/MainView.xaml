@@ -8,7 +8,7 @@
         xmlns:p="clr-namespace:Final.Properties"
         xmlns:views="clr-namespace:Final.Views"
         mc:Ignorable="d"
-        Title="Meteo" Height="500" Width="820"
+        Title="{x:Static p:traduction.App_Titre}"  Height="500" Width="820"
         Icon="/assets/soleil.ico">
 
     <Window.Resources>

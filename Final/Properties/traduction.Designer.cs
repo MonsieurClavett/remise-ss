@@ -70,6 +70,15 @@ namespace Final.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Meteo.
+        /// </summary>
+        public static string App_Titre {
+            get {
+                return ResourceManager.GetString("App_Titre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Changer la langue demande un redémarrage de l&apos;application..
         /// </summary>
         public static string Changement_Langue {

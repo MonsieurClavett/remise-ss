@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Final.Views"
         xmlns:p="clr-namespace:Final.Properties"
         mc:Ignorable="d"
-        Title="Configuration" Height="340" Width="680"
+        Title="{x:Static p:traduction.Menu_Configuration}" Height="340" Width="680"
         Icon="/assets/soleil.ico"
         >
     <Grid Margin="12">

@@ -192,4 +192,7 @@
   <data name="Changement_Langue" xml:space="preserve">
     <value>Changing language requires a restart of the application.</value>
   </data>
+  <data name="App_Titre" xml:space="preserve">
+    <value>Weather</value>
+  </data>
 </root>
